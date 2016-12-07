@@ -1,0 +1,1 @@
+We’ll create a very simple Spark application
