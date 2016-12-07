@@ -75,7 +75,7 @@ public class SimpleConsumer implements Runnable {
     public static void main(String[] args) throws InterruptedException {
         List<String> topics = KafkaTopic.getTopicNames();
         topics.add("streams-output-01");
-        Consumer kafkaConsumer = Kafkas.getConsumerInstance();
+        Consumer kafkaConsumer = Kafkas.getConsumer();
 
         SimpleConsumer simpleConsumerTask = new SimpleConsumer(topics, kafkaConsumer);
         simpleConsumerTask.setRebalanceListener(true);

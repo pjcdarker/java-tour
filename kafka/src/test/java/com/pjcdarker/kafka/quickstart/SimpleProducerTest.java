@@ -7,12 +7,10 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * @author pjc
  * @create 10/20/2016
- * @see https://github.com/sdpatil/KafkaAPIClient/tree/master/src/main/java/com/spnotes/kafka/partition
  */
 public class SimpleProducerTest {
 
@@ -23,7 +21,7 @@ public class SimpleProducerTest {
     @BeforeClass
     public static void before() {
         topics = Arrays.asList("topic01", "topic02");
-        producer = Kafkas.getProducerInstance();
+        producer = Kafkas.getProducer();
         simpleProducer = new SimpleProducer(topics, producer);
     }
 

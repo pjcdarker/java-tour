@@ -7,7 +7,6 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * @author pjc
@@ -21,7 +20,7 @@ public class SimpleConsumerTest {
     @BeforeClass
     public static void before() {
         topics = Arrays.asList("topic01", "topic02");
-        kafkaConsumer = Kafkas.getConsumerInstance();
+        kafkaConsumer = Kafkas.getConsumer();
     }
 
     @Test

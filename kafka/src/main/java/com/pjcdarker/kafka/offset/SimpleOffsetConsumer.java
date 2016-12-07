@@ -84,7 +84,7 @@ public class SimpleOffsetConsumer implements Runnable {
 
     public static void main(String[] args) throws InterruptedException {
         List<String> topics = Arrays.asList("topic01", "topic02");
-        Consumer kafkaConsumer = Kafkas.getConsumerInstance();
+        Consumer kafkaConsumer = Kafkas.getConsumer();
 
 
         int offset = 0;

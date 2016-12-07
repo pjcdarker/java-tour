@@ -9,7 +9,6 @@ import org.apache.kafka.clients.producer.RecordMetadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -70,7 +69,7 @@ public class SimpleProducer {
 
     public static void main(String[] args) {
         List<String> topics = KafkaTopic.getTopicNames();
-        Producer producer = Kafkas.getProducerInstance();
+        Producer producer = Kafkas.getProducer();
         SimpleProducer simpleProducer = new SimpleProducer(topics, producer);
 
         String name = ADPartitioner.class.getCanonicalName();
