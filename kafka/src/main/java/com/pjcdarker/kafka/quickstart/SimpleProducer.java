@@ -18,7 +18,6 @@ import java.util.concurrent.ExecutionException;
 /**
  * @author pjc
  * @create 10/20/2016
- * @see https://github.com/sdpatil/KafkaAPIClient/tree/master/src/main/java/com/spnotes/kafka/partition
  */
 public class SimpleProducer {
 
