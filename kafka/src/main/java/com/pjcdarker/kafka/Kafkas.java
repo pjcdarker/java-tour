@@ -16,32 +16,32 @@ public class Kafkas {
     private static final String KAFKA_PRODUCER_CONFIG = "/kafka.producer.properties";
     private static final String KAFKA_COMSUMER_CONFIG = "/kafka.consumer.properties";
 
-    public static Producer getProducerInstance() {
+    public static Producer getProducer() {
         Properties configProperties = PropertiesUtil.load(KAFKA_PRODUCER_CONFIG);
-        return getProducerInstance(configProperties);
+        return getProducer(configProperties);
     }
 
-    public static Producer getProducerInstance(String configPath) {
+    public static Producer getProducer(String configPath) {
         Properties configProperties = PropertiesUtil.load(configPath);
-        return getProducerInstance(configProperties);
+        return getProducer(configProperties);
     }
 
-    public static Producer getProducerInstance(Properties configProperties) {
+    public static Producer getProducer(Properties configProperties) {
         Producer producer = new KafkaProducer(configProperties);
         return producer;
     }
 
-    public static Consumer getConsumerInstance() {
+    public static Consumer getConsumer() {
         Properties configProperties = PropertiesUtil.load(KAFKA_COMSUMER_CONFIG);
-        return getConsumerInstance(configProperties);
+        return getConsumer(configProperties);
     }
 
-    public static Consumer getConsumerInstance(String configPath) {
+    public static Consumer getConsumer(String configPath) {
         Properties configProperties = PropertiesUtil.load(configPath);
-        return getConsumerInstance(configProperties);
+        return getConsumer(configProperties);
     }
 
-    public static Consumer getConsumerInstance(Properties configProperties) {
+    public static Consumer getConsumer(Properties configProperties) {
         Consumer kafkaConsumer = new KafkaConsumer<>(configProperties);
         return kafkaConsumer;
     }
