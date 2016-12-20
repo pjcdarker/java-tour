@@ -20,4 +20,9 @@ public class TestGudie {
         String path = "src/main/resources/spark.md";
         Gudie.textFileCount(path);
     }
+
+    @Test
+    public void parallelize() {
+        Gudie.parallelize();
+    }
 }

@@ -6,6 +6,6 @@ package com.pjcdarker.pattern.strategy;
  */
 public interface ADCalculationStrategy {
 
-    double calculation(double balance);
+    double calculate(double balance);
 
 }
