@@ -35,6 +35,7 @@ public class Gudie {
 
         // a second parameter  to set the number of partitions
         // JavaRDD<Integer> rdd = sparkContext.parallelize(lists, 4).cache();
+
         long count = rdd.count();
         System.out.println("count : " + count);
 
