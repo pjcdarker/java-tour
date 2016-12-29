@@ -35,12 +35,11 @@ public class Gudie {
 
         // a second parameter  to set the number of partitions
         // JavaRDD<Integer> rdd = sparkContext.parallelize(lists, 4).cache();
-
         long count = rdd.count();
         System.out.println("count : " + count);
 
         Integer sum = rdd.reduce((n1, n2) -> {
-            System.out.println("currentThread name is : " + Thread.currentThread().getName());
+            System.out.println("currentThread name : " + Thread.currentThread().getName());
             return n1 + n2;
         });
         System.out.println("sum: " + sum);
