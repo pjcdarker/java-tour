@@ -44,4 +44,8 @@ public class Gudie {
         });
         System.out.println("sum: " + sum);
     }
+
+    public static void removeDate() {
+
+    }
 }
