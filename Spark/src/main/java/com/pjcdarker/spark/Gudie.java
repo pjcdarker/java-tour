@@ -50,6 +50,8 @@ public class Gudie {
 
         // tells Spark how to access a cluster
         JavaSparkContext javaSparkContext = new JavaSparkContext(sparkConf);
-        JavaRDD<String> javaRDD = javaSparkContext.textFile(path).cache();
+        JavaRDD<String> rdd = javaSparkContext.textFile(path).cache();
+
+        rdd.unpersist();
     }
 }
