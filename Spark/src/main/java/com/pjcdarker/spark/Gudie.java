@@ -27,6 +27,16 @@ public class Gudie {
         System.out.println("Lines with a: " + numA + ", lines with b: " + numB);
     }
 
+    public static void removeDate(String path) {
+        SparkConf sparkConf = new SparkConf().setMaster("local[*]").setAppName("GudieApp");
+
+        // tells Spark how to access a cluster
+        JavaSparkContext javaSparkContext = new JavaSparkContext(sparkConf);
+        JavaRDD<String> rdd = javaSparkContext.textFile(path).cache();
+
+        rdd.unpersist();
+    }
+
     public static void parallelize() {
         List<Integer> lists = Arrays.asList(1, 2, 3, 4, 5);
         SparkConf sparkConf = new SparkConf().setMaster("local[*]").setAppName("GudieApp");
@@ -43,15 +53,5 @@ public class Gudie {
             return n1 + n2;
         });
         System.out.println("sum: " + sum);
-    }
-
-    public static void removeDate(String path) {
-        SparkConf sparkConf = new SparkConf().setMaster("local[*]").setAppName("GudieApp");
-
-        // tells Spark how to access a cluster
-        JavaSparkContext javaSparkContext = new JavaSparkContext(sparkConf);
-        JavaRDD<String> rdd = javaSparkContext.textFile(path).cache();
-
-        rdd.unpersist();
     }
 }
