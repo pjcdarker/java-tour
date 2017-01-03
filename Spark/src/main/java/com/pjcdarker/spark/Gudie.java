@@ -45,7 +45,11 @@ public class Gudie {
         System.out.println("sum: " + sum);
     }
 
-    public static void removeDate() {
+    public static void removeDate(String path) {
+        SparkConf sparkConf = new SparkConf().setMaster("local[*]").setAppName("GudieApp");
 
+        // tells Spark how to access a cluster
+        JavaSparkContext javaSparkContext = new JavaSparkContext(sparkConf);
+        JavaRDD<String> javaRDD = javaSparkContext.textFile(path).cache();
     }
 }
