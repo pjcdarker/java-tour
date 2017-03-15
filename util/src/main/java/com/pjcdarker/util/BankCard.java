@@ -17,7 +17,6 @@ public class BankCard {
     private static char getBankCardCheckCode(String nonCheckCodeCardId) {
         if (nonCheckCodeCardId == null || nonCheckCodeCardId.trim().length() == 0
                 || !nonCheckCodeCardId.matches("\\d+")) {
-            //如果传的不是数据返回N
             return 'N';
         }
         char[] chs = nonCheckCodeCardId.trim().toCharArray();

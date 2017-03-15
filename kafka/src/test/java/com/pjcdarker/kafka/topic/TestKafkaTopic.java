@@ -13,4 +13,11 @@ public class TestKafkaTopic {
         KafkaTopic.create();
         KafkaTopic.getTopicNames().forEach(System.out::println);
     }
+
+    @Test
+    public void removeTopic() {
+        // KafkaTopic.deleteTopic("topic01-1");
+        // KafkaTopic.deleteTopic("topic02-1");
+        // KafkaTopic.deleteTopic("testTopic-1");
+    }
 }

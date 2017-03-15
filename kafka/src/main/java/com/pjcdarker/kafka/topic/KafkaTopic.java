@@ -17,7 +17,6 @@ import java.util.Properties;
  */
 public class KafkaTopic {
 
-    private static final String KAFKA_BROKER_CONFIG = "/kafka.broker.properties";
     private static final String KAFKA_TOPIC_CONFIG = "/kafka.topic.properties";
 
     private static Properties kafkaTopicProp;

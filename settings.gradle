@@ -4,4 +4,5 @@ include 'kafka'
 include 'util'
 include 'AWSLambda'
 include 'Spark'
+include 'beam'
 

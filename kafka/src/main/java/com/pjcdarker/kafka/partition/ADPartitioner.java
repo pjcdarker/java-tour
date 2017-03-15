@@ -1,13 +1,14 @@
 package com.pjcdarker.kafka.partition;
 
-import com.sun.corba.se.impl.encoding.OSFCodeSetRegistry;
 import org.apache.kafka.clients.producer.Partitioner;
 import org.apache.kafka.common.Cluster;
 import org.apache.kafka.common.PartitionInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -32,20 +33,16 @@ public class ADPartitioner implements Partitioner {
      */
     @Override
     public int partition(String topic, Object key, byte[] keyBytes, Object value, byte[] valueBytes, Cluster cluster) {
-        logger.info("topic: " + topic);
-        logger.info("value: " + value);
+        logger.info("topic: " + topic + ", value: " + value);
         List<PartitionInfo> partitions = cluster.availablePartitionsForTopic(topic);
-
         if (adPartitionMap.containsKey(value)) {
             return adPartitionMap.get(value);
         } else {
             int partitionTopicSize = cluster.topics().size();
-            System.out.println("hashCode:" + value.hashCode());
-            logger.info("value: " + value);
             int partition = value.hashCode() % partitionTopicSize;
             partition = partition % adPartitionMap.size();
             logger.info("partition: " + partition);
-            return partition;
+            return 0;
         }
     }
 
@@ -63,8 +60,8 @@ public class ADPartitioner implements Partitioner {
             logger.info("key: " + key);
             if (key.startsWith("partitions.")) {
                 String value = (String) entry.getValue();
-                int paritionId = Integer.parseInt(key.substring(11));
-                adPartitionMap.put(value, paritionId);
+                int partitionId = Integer.parseInt(key.substring("partitions.".length()));
+                adPartitionMap.put(value, partitionId);
             }
         });
     }

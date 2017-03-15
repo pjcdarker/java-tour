@@ -9,7 +9,7 @@ import java.security.NoSuchAlgorithmException;
  */
 public class Credentials {
 
-    public static String credentials(String original, String algorithm) throws NoSuchAlgorithmException {
+    public static String build(String original, String algorithm) throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance(algorithm);
         digest.update(original.getBytes());
 
@@ -22,7 +22,7 @@ public class Credentials {
     }
 
     public static void main(String[] args) throws NoSuchAlgorithmException {
-        String md5 = credentials("123456", "MD5");
+        String md5 = Credentials.build("123456", "MD5");
         System.out.println(md5);
     }
 }

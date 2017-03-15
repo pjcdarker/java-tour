@@ -14,10 +14,10 @@ public class PropertiesUtil {
     private static final String KAFKA_COMSUMER_CONFIG = "/kafka.consumer.properties";
 
     public static Properties load(String configPath) {
-        return initLoad(configPath);
+        return init(configPath);
     }
 
-    private static Properties initLoad(String configPath) {
+    private static Properties init(String configPath) {
         Properties properties = new Properties();
         try {
             InputStream inputStream = PropertiesUtil.class.getResourceAsStream(configPath);

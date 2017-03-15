@@ -26,10 +26,15 @@ public class KafkaStreamWordCountProcessor {
         builder.addProcessor("Process", new WordCountProcessorSupplier(), "Source");
 
         // create state 与 Processor 链接
-        builder.addStateStore(Stores.create("Counts").withStringKeys().withIntegerValues().inMemory().build(), "Process");
+        builder.addStateStore(
+                Stores.create("Counts")
+                .withStringKeys()
+                .withIntegerValues()
+                .inMemory()
+                .build(), "Process");
 
-        // 添加 sink 节点到 TopologyBuilder ，从不同的Process节点输出到 streams-wordcount-processor-output topic
-        builder.addSink("Sink", "streams-wordcount-processor-output", "Process");
+        // 添加 sink 节点到 TopologyBuilder ，从不同的Process节点输出到 streams-word-count-processor-output topic
+        builder.addSink("Sink", "streams-word-count-processor-output", "Process");
 
         Properties properties = PropertiesUtil.load(KAFKA_STREAMS_CONFIG);
         KafkaStreams streams = new KafkaStreams(builder, properties);

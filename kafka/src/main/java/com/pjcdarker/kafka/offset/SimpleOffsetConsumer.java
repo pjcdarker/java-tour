@@ -25,7 +25,7 @@ public class SimpleOffsetConsumer implements Runnable {
 
     private List<String> topics;
     private Consumer consumer;
-    private boolean isRebalanceListener;
+    private boolean isRebalancedListener;
     private int offset;
 
     public SimpleOffsetConsumer(List topics, Consumer consumer, int offset) {
@@ -34,13 +34,13 @@ public class SimpleOffsetConsumer implements Runnable {
         this.offset = offset;
     }
 
-    void setRebalanceListener(boolean isRebalanceListener) {
-        this.isRebalanceListener = isRebalanceListener;
+    void setRebalancedListener(boolean isRebalanceListener) {
+        this.isRebalancedListener = isRebalanceListener;
     }
 
     @Override
     public void run() {
-        if (isRebalanceListener) {
+        if (isRebalancedListener) {
             consumer.subscribe(topics, new ConsumerRebalanceListener() {
                 public void onPartitionsRevoked(Collection<TopicPartition> partitions) {
                     LOGGER.info("{} topic-partitions are revoked from this consumer\n", Arrays.toString(partitions.toArray()));
@@ -86,10 +86,9 @@ public class SimpleOffsetConsumer implements Runnable {
         List<String> topics = Arrays.asList("topic01", "topic02");
         Consumer kafkaConsumer = Kafkas.getConsumer();
 
-
         int offset = 0;
         SimpleOffsetConsumer simpleConsumerTask = new SimpleOffsetConsumer(topics, kafkaConsumer, offset);
-        simpleConsumerTask.setRebalanceListener(true);
+        simpleConsumerTask.setRebalancedListener(true);
 
         Thread consumerThread = new Thread(simpleConsumerTask);
         consumerThread.start();

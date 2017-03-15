@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  */
 public class PropertiesUtil {
 
-    private static ConcurrentMap<String, Properties> propertiesConcurrentMap = new ConcurrentHashMap<>();
+    private static ConcurrentMap<String, Properties> propertiesMap = new ConcurrentHashMap<>();
 
     public static Properties getProperties(String propertiesPath) {
         return init(propertiesPath);
@@ -36,11 +36,14 @@ public class PropertiesUtil {
 
     public static String toJsonString(String propertiesPath) {
         Properties properties = getProperties(propertiesPath);
-        return properties.entrySet().stream().map(props -> props.getKey() + ":" + props.getValue()).collect(Collectors.joining(",", "{", "}"));
+        return properties.entrySet()
+                .stream()
+                .map(props -> props.getKey() + ":" + props.getValue())
+                .collect(Collectors.joining(",", "{", "}"));
     }
 
     private static Properties init(String propertiesPath) {
-        return propertiesConcurrentMap.computeIfAbsent(propertiesPath, k -> load(k));
+        return propertiesMap.computeIfAbsent(propertiesPath, k -> load(k));
     }
 
     private static Properties load(String propertiesPath) {

@@ -2,9 +2,9 @@ package com.pjcdarker.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Base64;
-import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -14,9 +14,11 @@ import java.util.stream.Collectors;
  */
 public class Signature {
 
+    private static final String ALPHA_NUMBER = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
     public static String generateToken() {
         String value = String.valueOf(System.currentTimeMillis());
-        value += UUID.randomUUID().toString() + new Random().nextInt(10000);
+        value += UUID.randomUUID().toString() + randomString(130);
         try {
             MessageDigest md = MessageDigest.getInstance("md5");
             byte[] b = md.digest(value.getBytes());
@@ -27,13 +29,22 @@ public class Signature {
         return null;
     }
 
-
-    public static String generateSignature(String token, String timestamp, String nonce) {
+    public static String generate(String token, String timestamp, String nonce) {
         String[] signatureArr = {token, timestamp, nonce};
         Arrays.sort(signatureArr);
         String tmpStr = ArrayToString(signatureArr);
         tmpStr = sha1(tmpStr);
         return tmpStr;
+    }
+
+
+    private static String randomString(int len) {
+        StringBuilder sb = new StringBuilder(len);
+        SecureRandom random = new SecureRandom();
+        for (int i = 0; i < len; i++) {
+            sb.append(ALPHA_NUMBER.charAt(random.nextInt(ALPHA_NUMBER.length())));
+        }
+        return sb.toString();
     }
 
     private static String ArrayToString(String[] strArr) {

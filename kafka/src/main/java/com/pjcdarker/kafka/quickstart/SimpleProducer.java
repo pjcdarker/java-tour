@@ -32,7 +32,7 @@ public class SimpleProducer {
 
     public void send(String message) {
         System.out.println("producer send msg: " + message);
-        this.topics.parallelStream().forEach(topic -> {
+        this.topics.forEach(topic -> {
             ProducerRecord producerRecord = new ProducerRecord(topic, topic + message, message);
             try {
                 RecordMetadata recordMetadata = (RecordMetadata) producer.send(producerRecord).get();
@@ -71,9 +71,6 @@ public class SimpleProducer {
         List<String> topics = KafkaTopic.getTopicNames();
         Producer producer = Kafkas.getProducer();
         SimpleProducer simpleProducer = new SimpleProducer(topics, producer);
-
-        String name = ADPartitioner.class.getCanonicalName();
-        System.out.println(name);
 
         Scanner scanner = new Scanner(System.in);
         String msg = "";
