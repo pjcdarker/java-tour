@@ -14,7 +14,7 @@ import java.util.Properties;
 public class Kafkas {
 
     private static final String KAFKA_PRODUCER_CONFIG = "/kafka.producer.properties";
-    private static final String KAFKA_COMSUMER_CONFIG = "/kafka.consumer.properties";
+    private static final String KAFKA_CONSUMER_CONFIG = "/kafka.consumer.properties";
 
     public static Producer getProducer() {
         Properties configProperties = PropertiesUtil.load(KAFKA_PRODUCER_CONFIG);
@@ -32,7 +32,7 @@ public class Kafkas {
     }
 
     public static Consumer getConsumer() {
-        Properties configProperties = PropertiesUtil.load(KAFKA_COMSUMER_CONFIG);
+        Properties configProperties = PropertiesUtil.load(KAFKA_CONSUMER_CONFIG);
         return getConsumer(configProperties);
     }
 
