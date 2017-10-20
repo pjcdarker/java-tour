@@ -1,6 +1,5 @@
 package com.pjcdarker.kafka.partition;
 
-import com.sun.corba.se.impl.encoding.OSFCodeSetRegistry;
 import org.apache.kafka.clients.producer.Partitioner;
 import org.apache.kafka.common.Cluster;
 import org.apache.kafka.common.PartitionInfo;

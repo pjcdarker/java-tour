@@ -36,7 +36,10 @@ public class PropertiesUtil {
 
     public static String toJsonString(String propertiesPath) {
         Properties properties = getProperties(propertiesPath);
-        return properties.entrySet().stream().map(props -> props.getKey() + ":" + props.getValue()).collect(Collectors.joining(",", "{", "}"));
+        return properties.entrySet()
+                         .stream()
+                         .map(props -> props.getKey() + ":" + props.getValue())
+                         .collect(Collectors.joining(",", "{", "}"));
     }
 
     private static Properties init(String propertiesPath) {
