@@ -64,7 +64,7 @@ public class Signature {
                 stringBuilder.append(Long.toString(t, 16));
             }
         } catch (NoSuchAlgorithmException e) {
-            //
+            e.printStackTrace();
         }
         return stringBuilder.toString().toLowerCase();
     }
