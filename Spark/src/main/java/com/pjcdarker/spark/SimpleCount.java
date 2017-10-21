@@ -5,7 +5,6 @@ import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
-import org.apache.spark.api.java.function.Function2;
 import org.apache.spark.broadcast.Broadcast;
 import scala.Tuple2;
 
@@ -18,13 +17,17 @@ import java.util.List;
  */
 public class SimpleCount {
 
+    public static void main(String[] args) {
+        String path = "src/main/resources/spark.md";
+        textFileCount(path);
+    }
 
     /**
      * @param path test/  *.txt  test.gz
      */
     public static void textFileCount(String path) {
         // local  * Thread
-        SparkConf sparkConf = new SparkConf().setMaster("spark://192.168.10.134:7077").setAppName("textFileCount");
+        SparkConf sparkConf = new SparkConf().setMaster("spark://192.168.1.134:7077").setAppName("textFileCount");
 
         // tells Spark how to access a cluster
         JavaSparkContext javaSparkContext = new JavaSparkContext(sparkConf);
@@ -40,11 +43,11 @@ public class SimpleCount {
         rdd.mapToPair(s -> new Tuple2<>(s, 1))
                 .reduceByKey((t1, t2) -> t1 + t2)
                 .foreach(s -> System.out.println(s._1 + "==================" + s._2));
+
     }
 
     public static void wholeTextFilesCount(String path) {
-        SparkConf sparkConf = new SparkConf().setMaster("local[*]").setAppName("wholeTextFilesCount");
-        JavaSparkContext javaSparkContext = new JavaSparkContext(sparkConf);
+        JavaSparkContext javaSparkContext = SparkContexts.local("wholeTextFilesCount");
         JavaPairRDD<String, String> pairRDD = javaSparkContext.wholeTextFiles(path).cache();
 
         int partitions = pairRDD.getNumPartitions();
@@ -62,8 +65,7 @@ public class SimpleCount {
 
     public static void removeData(String path) {
         List<Integer> lists = Arrays.asList(1, 2, 3, 4, 5);
-        SparkConf sparkConf = new SparkConf().setMaster("local[*]").setAppName("removeData");
-        JavaSparkContext sparkContext = new JavaSparkContext(sparkConf);
+        JavaSparkContext sparkContext = SparkContexts.local("removeData");
         JavaRDD<Integer> rdd = sparkContext.parallelize(lists).cache();
 
         // Memory Deserialized 1x Replicated
@@ -79,8 +81,7 @@ public class SimpleCount {
 
 
     public static void broadcastVar() {
-        SparkConf sparkConf = new SparkConf().setMaster("local[*]").setAppName("broadcastVar");
-        JavaSparkContext sparkContext = new JavaSparkContext(sparkConf);
+        JavaSparkContext sparkContext = SparkContexts.local("broadcastVar");
         Broadcast<int[]> broadcastVar = sparkContext.broadcast(new int[]{1, 2, 3});
         int[] values = broadcastVar.value();
         System.out.println(Arrays.toString(values));
@@ -88,19 +89,16 @@ public class SimpleCount {
 
     public static void printEle() {
         List<Integer> lists = Arrays.asList(1, 2, 3, 4, 5);
-        SparkConf sparkConf = new SparkConf().setMaster("local[*]").setAppName("printEle");
-        JavaSparkContext sparkContext = new JavaSparkContext(sparkConf);
+        JavaSparkContext sparkContext = SparkContexts.local("printElement");
         JavaRDD<Integer> rdd = sparkContext.parallelize(lists).cache();
-
         // java.io.NotSerializableException: java.io.PrintStream
         // rdd.foreach(System.out::println);
-
         rdd.take(10).forEach(System.out::println);
     }
 
     public static void parallel() {
         List<Integer> lists = Arrays.asList(1, 2, 3, 4, 5);
-        JavaSparkContext sparkContext = SparkContext.local("parallel");
+        JavaSparkContext sparkContext = SparkContexts.local("parallel");
         JavaRDD<Integer> rdd = sparkContext.parallelize(lists).cache();
 
         long count = rdd.count();
@@ -113,38 +111,8 @@ public class SimpleCount {
         System.out.println("sum: " + sum);
     }
 
-    public static void main(String[] args) {
-        // parallel();
-        saveAsTextFile();
-    }
-
-    public static void saveAsTextFile() {
-        SparkConf sparkConf = new SparkConf()
-                .setAppName("saveAsTextFile")
-                .setJars(new String[]{"D:\\workspace\\pjcdarker\\backend\\learn\\out\\artifacts\\Spark_jar\\Spark.jar"})
-                .setMaster("spark://192.168.10.134:7077")
-                .set("spark.scheduler.mode", "FAIR");
-        JavaSparkContext sparkContext = new JavaSparkContext(sparkConf);
-
-        List<Integer> list = Arrays.asList(1, 2, 3, 4, 5);
-        JavaRDD<Integer> rdd = sparkContext.parallelize(list).cache();
-        long count = rdd.count();
-        System.out.println("count===" + count);
-
-        Integer sum = rdd.reduce((Function2<Integer, Integer, Integer>) (v1, v2) -> v1 + v2);
-        System.out.println("sum===" + sum);
-
-        // JavaPairRDD<Integer, Integer> output = rdd.mapToPair(s -> new Tuple2<>(s, 1))
-        //         .reduceByKey((t1, t2) -> t1 + t2);
-        //
-        // output.foreach(pair -> {
-        //     System.out.println(pair._1 + "===========" + pair._2);
-        // });
-        // output.saveAsTextFile("src/main/resources/result.md");
-    }
-
     public static void sequenceFileCount(String path) {
-        JavaSparkContext sparkContext = SparkContext.local("sequenceFileCount");
+        JavaSparkContext sparkContext = SparkContexts.local("sequenceFileCount");
         JavaPairRDD<String, Integer> pairRDD = sparkContext.sequenceFile(path, String.class, Integer.class);
         pairRDD.foreach((intWritableTextTuple2 -> {
             String key = intWritableTextTuple2._1.toString();
@@ -154,7 +122,7 @@ public class SimpleCount {
     }
 
     public static void hadoopRDDCount() {
-        JavaSparkContext javaSparkContext = SparkContext.local("hadoopRDDCount");
+        JavaSparkContext javaSparkContext = SparkContexts.local("hadoopRDDCount");
         Configuration hadoopConf = new Configuration();
         JavaPairRDD<String, Integer> pairRDD = javaSparkContext.newAPIHadoopRDD(hadoopConf, null, String.class, Integer.class);
         pairRDD.foreach((intWritableTextTuple2 -> {

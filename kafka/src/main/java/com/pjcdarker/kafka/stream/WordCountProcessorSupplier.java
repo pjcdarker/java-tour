@@ -1,4 +1,4 @@
-package com.pjcdarker.kafka.stream.wordcount;
+package com.pjcdarker.kafka.stream;
 
 import org.apache.kafka.streams.processor.Processor;
 import org.apache.kafka.streams.processor.ProcessorSupplier;

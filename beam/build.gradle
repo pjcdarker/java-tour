@@ -1,0 +1,11 @@
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
+dependencies {
+    compile 'org.apache.beam:beam-sdks-java-core:0.4.0',
+            'org.apache.beam:beam-runners-direct-java:0.4.0'
+}

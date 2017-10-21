@@ -16,11 +16,6 @@ public class TestSimpleCount {
     }
 
     @Test
-    public void saveAsTextFile() {
-        SimpleCount.saveAsTextFile();
-    }
-
-    @Test
     public void wholeTextFilesCount() {
         SimpleCount.wholeTextFilesCount(FILE_PATH);
     }

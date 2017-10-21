@@ -1,11 +1,7 @@
 package com.pjcdarker.kafka.streams;
 
-import com.pjcdarker.kafka.quickstart.SimpleConsumer;
-import com.pjcdarker.kafka.stream.wordcount.KafkaStreamWord;
+import com.pjcdarker.kafka.stream.KafkaStreamWord;
 import org.junit.Test;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * @author pjc

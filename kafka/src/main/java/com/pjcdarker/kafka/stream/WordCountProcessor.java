@@ -1,4 +1,4 @@
-package com.pjcdarker.kafka.stream.wordcount;
+package com.pjcdarker.kafka.stream;
 
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.processor.Processor;
@@ -44,19 +44,16 @@ public class WordCountProcessor implements Processor {
                 this.kvStore.put(word, oldValue + 1);
             }
         }
-        // 提交当前进度
         context.commit();
     }
 
     @Override
     public void punctuate(long timestamp) {
-        try (KeyValueIterator<String, Integer> iter = this.kvStore.all()) {
+        try (KeyValueIterator<String, Integer> keyValueIterator = this.kvStore.all()) {
             System.out.println("----------- " + timestamp + " ----------- ");
-            while (iter.hasNext()) {
-                KeyValue<String, Integer> entry = iter.next();
+            while (keyValueIterator.hasNext()) {
+                KeyValue<String, Integer> entry = keyValueIterator.next();
                 System.out.println("[" + entry.key + ", " + entry.value + "]");
-
-                // 转发修改后的值
                 context.forward(entry.key, entry.value.toString());
             }
         }

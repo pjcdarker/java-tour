@@ -53,9 +53,7 @@ public class SimpleOffsetConsumer implements Runnable {
                         case 0:
                             consumer.seekToBeginning(partitions);
                         default:
-                            partitions.forEach(partition -> {
-                                consumer.seek(partition, offset);
-                            });
+                            partitions.forEach(partition -> consumer.seek(partition, offset));
                     }
                     LOGGER.info("{} topic-partitions are assigned to this consumer\n", Arrays.toString(partitions.toArray()));
                 }

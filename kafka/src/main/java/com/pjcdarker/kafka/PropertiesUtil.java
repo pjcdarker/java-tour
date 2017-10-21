@@ -10,9 +10,6 @@ import java.util.Properties;
  */
 public class PropertiesUtil {
 
-    private static final String KAFKA_PRODUCER_CONFIG = "/kafka.producer.properties";
-    private static final String KAFKA_COMSUMER_CONFIG = "/kafka.consumer.properties";
-
     public static Properties load(String configPath) {
         return init(configPath);
     }

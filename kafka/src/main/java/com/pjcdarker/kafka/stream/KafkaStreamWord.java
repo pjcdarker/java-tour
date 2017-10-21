@@ -1,4 +1,4 @@
-package com.pjcdarker.kafka.stream.wordcount;
+package com.pjcdarker.kafka.stream;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.Serdes;
@@ -51,18 +51,14 @@ public class KafkaStreamWord {
         KafkaStreams streams = new KafkaStreams(builder, properties);
         streams.start();
 
-        while (true) {
-
-        }
-
         // usually the stream application would be running forever,
         // in this example we just let it run for some time and stop since the input data is finite.
-        // try {
-        //     TimeUnit.SECONDS.sleep(5);
-        // } catch (InterruptedException e) {
-        //     e.printStackTrace();
-        // }
-        // streams.close();
+        try {
+            TimeUnit.SECONDS.sleep(5);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        streams.close();
     }
 
     public static void main(String[] args) {
