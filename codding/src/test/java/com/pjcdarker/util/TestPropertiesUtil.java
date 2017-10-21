@@ -3,6 +3,8 @@ package com.pjcdarker.util;
 import org.junit.Test;
 
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author pjc
@@ -28,5 +30,15 @@ public class TestPropertiesUtil {
     public void testToJsonString() {
         String jsonString = PropertiesUtil.toJsonString(PROPERTIES_PATH);
         System.out.println("json: " + jsonString);
+    }
+
+    @Test
+    public void partten() {
+        Pattern pattern = Pattern.compile("[\\w\\W\\u4e00-\\u9fa5]");
+        Matcher matcher = pattern.matcher("你好abc123@!`");
+        while (matcher.find()) {
+            String result = matcher.group();
+            System.out.println(result);
+        }
     }
 }
