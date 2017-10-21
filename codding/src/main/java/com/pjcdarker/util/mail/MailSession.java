@@ -1,6 +1,7 @@
-package com.pjcdarker.util.mail.bean;
+package com.pjcdarker.util.mail;
 
 import com.pjcdarker.util.PropertiesUtil;
+import com.pjcdarker.util.mail.bean.SmtpAuthenticator;
 
 import javax.mail.Authenticator;
 import javax.mail.NoSuchProviderException;
@@ -10,10 +11,10 @@ import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
 /**
- * @author pjc
- * @create 2016-10-10
+ * @author pjcdarker
+ * @created 10/21/2017.
  */
-public class MailSession {
+public final class MailSession {
 
     private static final String mailConfigPath = "/mail.properties";
 
@@ -40,7 +41,7 @@ public class MailSession {
     public Session createSession() {
         String username = this.props.getProperty("mail.username");
         String password = this.props.getProperty("mail.password");
-        Authenticator authenticator = new SMTPAuthenticator(username, password);
+        Authenticator authenticator = new SmtpAuthenticator(username, password);
         return Session.getInstance(props, authenticator);
     }
 

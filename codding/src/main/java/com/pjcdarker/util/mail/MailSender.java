@@ -1,7 +1,6 @@
 package com.pjcdarker.util.mail;
 
 import com.pjcdarker.util.mail.bean.MailBean;
-import com.pjcdarker.util.mail.bean.MailSession;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -19,14 +18,16 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * @author pjc
- * @create 2016-10-09
+ * @author pjcdarker
+ * @created 10/21/2017.
  */
 public class MailSender {
 
+    public static final MailSender instance = new MailSender();
+
     private MailSession mailSession;
 
-    MailSender() {
+    private MailSender() {
         mailSession = MailSession.getInstance();
     }
 

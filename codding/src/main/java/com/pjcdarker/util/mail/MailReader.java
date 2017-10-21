@@ -1,7 +1,5 @@
 package com.pjcdarker.util.mail;
 
-import com.pjcdarker.util.mail.bean.MailSession;
-
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import java.io.IOException;
@@ -11,15 +9,17 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * @author pjc
- * @created 2016-10-09
+ * @author pjcdarker
+ * @created 10/21/2017.
  */
 public class MailReader {
 
-    private final MailSession mailSession;
-    private final Properties properties;
+    public static final MailReader instance = new MailReader();
 
-    MailReader() {
+    private static MailSession mailSession;
+    private static Properties properties;
+
+    private MailReader() {
         mailSession = MailSession.getInstance();
         properties = mailSession.getProps();
     }
@@ -27,8 +27,7 @@ public class MailReader {
     void read() {
         try {
             Store store = mailSession.getSession().getStore(properties.getProperty("mail.store.protocol"));
-            store.connect(properties.getProperty("mail.pop3.host", properties.getProperty("mail.username")),
-                    properties.getProperty("mail.password"));
+            store.connect(properties.getProperty("mail.pop3.host"), properties.getProperty("mail.username"), properties.getProperty("mail.password"));
 
             Folder folder = store.getFolder("INBOX");
             folder.open(Folder.READ_WRITE);
@@ -92,4 +91,5 @@ public class MailReader {
 
         }
     }
+
 }

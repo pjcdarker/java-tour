@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author pjc
- * @create 2016-10-10
+ * @author pjcdarker
+ * @created 10/21/2017.
  */
 public class MailBean implements Serializable {
 
@@ -33,7 +33,7 @@ public class MailBean implements Serializable {
         this.fromAddress = fromAddress;
     }
 
-    public List<String > getToAddresses() {
+    public List<String> getToAddresses() {
         return toAddresses;
     }
 

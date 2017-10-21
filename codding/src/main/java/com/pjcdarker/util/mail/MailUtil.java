@@ -5,32 +5,24 @@ import com.pjcdarker.util.mail.bean.MailBean;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * @author pjc
- * @create 2016-10-10
+ * @author pjcdarker
+ * @created 10/21/2017.
  */
-public class Mails {
+public class MailUtil {
 
-    private Mails() {
-
-    }
-
-    public static Mails getInstance() {
-        return new Mails();
-    }
-
-    public void send(MailBean mailBean) {
+    public static void send(MailBean mailBean) {
         CompletableFuture.runAsync(() -> {
             try {
-                new MailSender().sendMail(mailBean);
+                MailSender.instance.sendMail(mailBean);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
     }
 
-    public void read() {
+    public static void read() {
         try {
-            new MailReader().read();
+            MailReader.instance.read();
         } catch (Exception e) {
             e.printStackTrace();
         }
