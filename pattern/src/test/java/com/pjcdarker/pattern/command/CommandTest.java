@@ -1,7 +1,7 @@
 package com.pjcdarker.pattern.command;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author pjc
@@ -11,7 +11,7 @@ public class CommandTest {
 
     private static CommandReceiver commandReceiver;
 
-    @BeforeClass
+    @BeforeAll
     public static void before() {
         commandReceiver = CommandReceiver.INSTANCE;
     }

@@ -1,6 +1,6 @@
 package com.pjcdarker.pattern.mediator;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author pjc

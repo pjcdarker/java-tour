@@ -2,8 +2,8 @@ package com.pjcdarker.kafka.quickstart;
 
 import com.pjcdarker.kafka.Kafkas;
 import org.apache.kafka.clients.producer.Producer;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,7 +18,7 @@ public class SimpleProducerTest {
     private static Producer producer;
     private static SimpleProducer simpleProducer;
 
-    @BeforeClass
+    @BeforeAll
     public static void before() {
         topics = Arrays.asList("topic01", "topic02");
         producer = Kafkas.getProducer();

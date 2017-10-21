@@ -1,17 +1,17 @@
 package com.pjcdarker.util;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author pjc
  * @create 2016-10-08
  */
-public class TestGreatestCommonDivisor {
+public class GreatestCommonDivisorTest {
 
     private static GreatestCommonDivisor GREATEST_COMMON_DIVISOR;
 
-    @BeforeClass
+    @BeforeAll
     public static void init() {
         GREATEST_COMMON_DIVISOR = new GreatestCommonDivisor();
     }

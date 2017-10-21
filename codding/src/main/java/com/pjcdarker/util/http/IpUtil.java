@@ -12,14 +12,13 @@ import java.util.List;
  * Proxy-Client-IP与WL-Proxy-Client-IP：apache + Weblogic
  * HTTP_CLIENT_IP: 代理服务器发送请求头
  *
- * @author pjc
+ * @author pjcdarker
+ * @created 10/21/2017.
  */
-public class IPUtil {
-
-    private static final List<String> HEADERS = Arrays.asList(
-            "X-Forwarded-For", "X-Real-IP", "Proxy-Client-IP", "WL-Proxy-Client-IP",
-            "HTTP_CLIENT_IP", "HTTP_X_FORWARDED_FOR"
-    );
+public class IpUtil {
+    private static final List<String> HEADERS = Arrays.asList("X-Forwarded-For", "X-Real-IP", "Proxy-Client-IP", "WL-Proxy-Client-IP", "HTTP_CLIENT_IP",
+                                                              "HTTP_X_FORWARDED_FOR"
+                                                             );
 
     private static final List<String> LOCAL_HOSTS = Arrays.asList("127.0.0.1", "localhost");
 
@@ -58,4 +57,5 @@ public class IPUtil {
         }
         return false;
     }
+
 }

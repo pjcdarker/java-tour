@@ -1,8 +1,7 @@
 package com.pjcdarker.pattern.strategy;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author pjc
@@ -12,7 +11,7 @@ public class TestADCalculationStrategy {
 
     private static ADCalculator adCalculator;
 
-    @BeforeClass
+    @BeforeAll
     public static void before() {
         adCalculator = new ADCalculator();
     }

@@ -1,6 +1,6 @@
 package com.pjcdarker.util;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
  * @author pjc
  * @create 2016-10-09
  */
-public class TestPropertiesUtil {
+public class PropertiesUtilTest {
 
     private static final String PROPERTIES_PATH = "/app.properties";
 

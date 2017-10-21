@@ -1,7 +1,7 @@
 package com.pjcdarker.pattern.chain;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author pjc
@@ -11,7 +11,7 @@ public class ChainTest {
 
     private static Chain chain;
 
-    @BeforeClass
+    @BeforeAll
     public static void createChain() {
         chain = Chain.INSTANCE;
     }
@@ -36,7 +36,9 @@ public class ChainTest {
 
     @Test
     public void testRequesthandler() {
-        chain = Chain.INSTANCE.next(ProductRequestHandler.INSTANCE).next(TestRequestHandler.INSTANCE).next(CheckRequestHandler.INSTANCE);
+        chain = Chain.INSTANCE.next(ProductRequestHandler.INSTANCE)
+                              .next(TestRequestHandler.INSTANCE)
+                              .next(CheckRequestHandler.INSTANCE);
         chain.handler(HandleType.PRODUCT, chain);
     }
 }

@@ -1,19 +1,18 @@
 package com.pjcdarker.util;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 /**
  * @author pjcdarker
- * @created 9/15/2017.
+ * @created 10/21/2017.
  */
-public class TestScannerRunner {
-
+public class ScanRunnerTest {
 
     @Test
     public void scan() {
-        List<Class<?>> results = ScannerRunner.findClassScanPackage("com.pjcdarker.util.http");
+        List<Class<?>> results = ScanRunner.findClassScanPackage("com.pjcdarker.util.http");
         results.forEach(r -> System.out.println(r.getCanonicalName()));
     }
 }

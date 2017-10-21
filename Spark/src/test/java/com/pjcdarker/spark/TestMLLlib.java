@@ -1,6 +1,6 @@
 package com.pjcdarker.spark;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author pjcdarker

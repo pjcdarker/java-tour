@@ -1,6 +1,10 @@
 package com.pjcdarker.util;
 
-public class IDCard {
+/**
+ * @author pjcdarker
+ * @created 10/21/2017.
+ */
+public class IdCard {
 
     private static int[] wight = {7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2};
     private static char[] validCodes = {'1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2'};
@@ -16,7 +20,7 @@ public class IDCard {
     }
 
     public static void main(String[] args) {
-        char validCode = IDCard.getValidCode("");
+        char validCode = IdCard.getValidCode("");
         System.out.println("last id card is " + validCode);
     }
 }

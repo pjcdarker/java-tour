@@ -1,7 +1,7 @@
 package com.pjcdarker.pattern.factory;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author pjc
@@ -11,7 +11,7 @@ public class FactoryTest {
 
     private static JobFactory jobFactory;
 
-    @BeforeClass
+    @BeforeAll
     public static void factory() {
         jobFactory = JobFactory.factory(builder -> {
             builder.builder(JobType.TEST, TestJob::new);

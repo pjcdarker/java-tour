@@ -1,6 +1,6 @@
 package com.pjcdarker.kafka.topic;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author pjc
@@ -11,7 +11,8 @@ public class TestKafkaTopic {
     @Test
     public void testCreate() {
         KafkaTopic.create();
-        KafkaTopic.getTopicNames().forEach(System.out::println);
+        KafkaTopic.getTopicNames()
+                  .forEach(System.out::println);
     }
 
     @Test

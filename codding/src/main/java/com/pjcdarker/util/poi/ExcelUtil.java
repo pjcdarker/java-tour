@@ -15,9 +15,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class ExcelUtils {
+/**
+ * @author pjcdarker
+ * @created 10/21/2017.
+ */
+public class ExcelUtil {
 
-    private static DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static final DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     /**
      * 读取
@@ -25,7 +29,9 @@ public class ExcelUtils {
      * @param inputStream
      * @param clazz<T>    泛型<实体类>
      * @param hasTitle    是否有表头
+     *
      * @return
+     *
      * @throws IOException
      */
     public static <T> List<T> read(InputStream inputStream, Class<T> clazz, boolean hasTitle) {
@@ -60,8 +66,7 @@ public class ExcelUtils {
                 }
             }
 
-        } catch (InstantiationException | IllegalAccessException | ParseException | InvalidFormatException
-                | IOException e) {
+        } catch (InstantiationException | IllegalAccessException | ParseException | InvalidFormatException | IOException e) {
             e.printStackTrace();
         }
         return results;
@@ -72,6 +77,7 @@ public class ExcelUtils {
      * @param list         数据
      * @param sheetName    sheet名
      * @param isXls        是否xls后缀格式
+     *
      * @return
      */
     public static <T> boolean write(OutputStream outputStream, List<T> list, String sheetName, boolean isXls) {
@@ -89,7 +95,8 @@ public class ExcelUtils {
         Map<Integer, String> titleMap = new TreeMap<>();
 
         // field
-        Field[] fields = object.getClass().getDeclaredFields();
+        Field[] fields = object.getClass()
+                               .getDeclaredFields();
         for (Field field : fields) {
             if (field.isAnnotationPresent(MapperCell.class)) {
                 MapperCell mapperCell = field.getAnnotation(MapperCell.class);
@@ -121,10 +128,12 @@ public class ExcelUtils {
                 for (int j = 0; j < titleCellLength; j++) {
                     Cell cell = row.createCell(j);
                     for (Map.Entry<String, Field> data : fieldMap.entrySet()) {
-                        if (data.getKey().equals(titleCells[j])) {
+                        if (data.getKey()
+                                .equals(titleCells[j])) {
                             Field field = data.getValue();
                             field.setAccessible(true);
-                            cell.setCellValue(field.get(list.get(i)).toString());
+                            cell.setCellValue(field.get(list.get(i))
+                                                   .toString());
                             break;
                         }
                     }
@@ -143,6 +152,7 @@ public class ExcelUtils {
      * @param cell
      * @param o
      * @param field
+     *
      * @throws IllegalAccessException
      * @throws ParseException
      */
@@ -161,24 +171,41 @@ public class ExcelUtils {
                 break;
             case Cell.CELL_TYPE_NUMERIC:
                 if (DateUtil.isCellDateFormatted(cell)) {
-                    if (field.getType().getName().equals(Date.class.getName())) {
+                    if (field.getType()
+                             .getName()
+                             .equals(Date.class.getName())) {
                         field.set(o, cell.getDateCellValue());
                     } else {
                         field.set(o, format.format(cell.getDateCellValue()));
                     }
                 } else {
-                    if (field.getType().isAssignableFrom(Integer.class) || field.getType().getName().equals("int")) {
+                    if (field.getType()
+                             .isAssignableFrom(Integer.class) || field.getType()
+                                                                      .getName()
+                                                                      .equals("int")) {
                         field.setInt(o, (int) cell.getNumericCellValue());
-                    } else if (field.getType().isAssignableFrom(Short.class) || field.getType().getName().equals("short")) {
+                    } else if (field.getType()
+                                    .isAssignableFrom(Short.class) || field.getType()
+                                                                           .getName()
+                                                                           .equals("short")) {
                         field.setShort(o, (short) cell.getNumericCellValue());
-                    } else if (field.getType().isAssignableFrom(Float.class) || field.getType().getName().equals("float")) {
+                    } else if (field.getType()
+                                    .isAssignableFrom(Float.class) || field.getType()
+                                                                           .getName()
+                                                                           .equals("float")) {
                         field.setFloat(o, (float) cell.getNumericCellValue());
-                    } else if (field.getType().isAssignableFrom(Byte.class) || field.getType().getName().equals("byte")) {
+                    } else if (field.getType()
+                                    .isAssignableFrom(Byte.class) || field.getType()
+                                                                          .getName()
+                                                                          .equals("byte")) {
                         field.setByte(o, (byte) cell.getNumericCellValue());
-                    } else if (field.getType().isAssignableFrom(Double.class)
-                            || field.getType().getName().equals("double")) {
+                    } else if (field.getType()
+                                    .isAssignableFrom(Double.class) || field.getType()
+                                                                            .getName()
+                                                                            .equals("double")) {
                         field.setDouble(o, cell.getNumericCellValue());
-                    } else if (field.getType().isAssignableFrom(String.class)) {
+                    } else if (field.getType()
+                                    .isAssignableFrom(String.class)) {
                         String s = String.valueOf(cell.getNumericCellValue());
                         if (s.contains("E")) {
                             s = s.trim();
@@ -192,10 +219,14 @@ public class ExcelUtils {
                 }
                 break;
             case Cell.CELL_TYPE_STRING:
-                if (Date.class.getName().equals(field.getType().getName())) {
-                    field.set(o, format.parse(cell.getRichStringCellValue().getString()));
+                if (Date.class.getName()
+                              .equals(field.getType()
+                                           .getName())) {
+                    field.set(o, format.parse(cell.getRichStringCellValue()
+                                                  .getString()));
                 } else {
-                    field.set(o, cell.getRichStringCellValue().getString());
+                    field.set(o, cell.getRichStringCellValue()
+                                     .getString());
                 }
                 break;
             default:

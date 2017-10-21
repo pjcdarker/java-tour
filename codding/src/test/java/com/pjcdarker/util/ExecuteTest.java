@@ -1,7 +1,7 @@
 package com.pjcdarker.util;
 
 import com.pjcdarker.util.reflection.Execute;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author pjcdarker

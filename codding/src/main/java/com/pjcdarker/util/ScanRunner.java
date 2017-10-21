@@ -12,9 +12,9 @@ import java.util.List;
 
 /**
  * @author pjcdarker
- * @created 2017-03-07.
+ * @created 10/21/2017.
  */
-public class ScannerRunner {
+public class ScanRunner {
 
     /**
      * @param packageName
@@ -23,8 +23,8 @@ public class ScannerRunner {
      */
     public static List<Class<?>> findClassScanPackage(String packageName) {
         String pathName = packageName.replace(".", "/");
-        URL url = ScannerRunner.class.getClassLoader()
-                                     .getResource(pathName);
+        URL url = ScanRunner.class.getClassLoader()
+                                  .getResource(pathName);
         if (url == null) {
             throw new InvalidPathException("'" + packageName + "' cannot be found by the ClassLoader", packageName);
         }
@@ -50,7 +50,7 @@ public class ScannerRunner {
                      }
                  });
 
-        } catch (URISyntaxException ex ) {
+        } catch (URISyntaxException ex) {
             throw new InvalidPathException("'" + packageName + "' is not a valid path", ex.getReason());
         } catch (IOException e) {
             e.printStackTrace();

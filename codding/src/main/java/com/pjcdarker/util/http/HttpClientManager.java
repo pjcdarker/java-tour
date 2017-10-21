@@ -73,14 +73,14 @@ public class HttpClientManager {
 
         // set request timeout
         RequestConfig.Builder requestBuilder = RequestConfig.custom()
-                .setConnectTimeout(5000)
-                .setSocketTimeout(5000)
-                .setContentCompressionEnabled(true);
+                                                            .setConnectTimeout(5000)
+                                                            .setSocketTimeout(5000)
+                                                            .setContentCompressionEnabled(true);
 
         // create httpClient
         HttpClientBuilder builder = HttpClientBuilder.create()
-                .setDefaultRequestConfig(requestBuilder.build())
-                .setConnectionManager(poolingHttpClientConnectionManager);
+                                                     .setDefaultRequestConfig(requestBuilder.build())
+                                                     .setConnectionManager(poolingHttpClientConnectionManager);
 
         return builder;
     }
