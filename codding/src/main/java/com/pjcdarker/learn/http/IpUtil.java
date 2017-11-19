@@ -16,9 +16,10 @@ import java.util.List;
  * @created 10/21/2017.
  */
 public class IpUtil {
-    private static final List<String> HEADERS = Arrays.asList("X-Forwarded-For", "X-Real-IP", "Proxy-Client-IP", "WL-Proxy-Client-IP", "HTTP_CLIENT_IP",
-                                                              "HTTP_X_FORWARDED_FOR"
-                                                             );
+    private static final List<String> HEADERS = Arrays.asList(
+            "X-Forwarded-For", "X-Real-IP", "Proxy-Client-IP",
+            "WL-Proxy-Client-IP", "HTTP_CLIENT_IP",
+            "HTTP_X_FORWARDED_FOR");
 
     private static final List<String> LOCAL_HOSTS = Arrays.asList("127.0.0.1", "localhost");
 
@@ -44,7 +45,7 @@ public class IpUtil {
         }
         if (ip.contains(",")) {
             int firstIndex = ip.indexOf(",");
-            if (firstIndex != -1) {
+            if (firstIndex >= 0) {
                 ip = ip.substring(0, firstIndex);
             }
         }

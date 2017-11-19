@@ -14,8 +14,7 @@ public class Enums {
 
     public static <T, E extends Enum> Function<T, E> lookupMap(Class clazz, Function<E, T> mapper) {
         E[] emptyArray = (E[]) Array.newInstance(clazz, 0);
-        return lookupMap((E[]) EnumSet.allOf(clazz)
-                                      .toArray(emptyArray), mapper);
+        return lookupMap((E[]) EnumSet.allOf(clazz).toArray(emptyArray), mapper);
     }
 
     public static <T, E extends Enum> Function<T, E> lookupMap(E[] values, Function<E, T> mapper) {
