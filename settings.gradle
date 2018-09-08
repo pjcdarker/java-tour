@@ -1,7 +1,6 @@
-rootProject.name = 'learn'
+rootProject.name = 'learn-java'
 include 'pattern'
 include 'kafka'
 include 'spark'
 include 'base'
 include 'j9'
-
