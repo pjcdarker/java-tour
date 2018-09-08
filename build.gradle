@@ -1,15 +1,17 @@
-allprojects {
+subprojects {
     group 'com.pjcdarker'
     version '1.0-SNAPSHOT'
-
-    ext.junitJupiterVersion  = '5.0.1'
-    ext.junitPlatformVersion = '1.0.1'
 
     apply plugin: 'java'
     apply plugin: 'idea'
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
+
+    ext {
+        junitJupiterVersion = '5.0.1'
+        junitPlatformVersion = '1.0.1'
+    }
 
     repositories {
         mavenLocal()

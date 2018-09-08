@@ -1,31 +1,30 @@
-package com.pjcdarker.j9.http;
+package com.pjcdarer.j9.net;
 
-import jdk.incubator.http.HttpClient;
-import jdk.incubator.http.HttpRequest;
-import jdk.incubator.http.HttpResponse;
+
+import com.sun.deploy.net.HttpRequest;
+import com.sun.deploy.net.HttpResponse;
+import sun.net.www.http.HttpClient;
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 /**
  * @author pjcdarker
- * @created 10/14/2017.
  */
 public class HttpClientManager {
 
     private static final HttpClient httpClient = HttpClient.newHttpClient();
 
-    public static Map<String, Object> get() {
-
+    public static Map<String, Object> get(String url) {
+        Objects.requireNonNull(url, "request url require non null");
         Map<String, Object> resultMap = new HashMap<>();
-
         try {
-            HttpRequest httpRequest = HttpRequest.newBuilder().uri(new URI("https://github.com")).GET().build();
+            HttpRequest httpRequest = HttpRequest.newBuilder().uri(new URI(url)).GET().build();
+
             HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandler.asString());
             resultMap.put("status", httpResponse.statusCode());
             resultMap.put("data", httpResponse.body());
@@ -39,11 +38,13 @@ public class HttpClientManager {
     }
 
 
-    public static Map<String, Object> asyncGet() {
+    public static Map<String, Object> asyncGet(String url) {
+        Objects.requireNonNull(url, "request url require non null");
         Map<String, Object> resultMap = new HashMap<>();
         try {
-            HttpRequest httpRequest = HttpRequest.newBuilder().uri(new URI("https://github.com")).GET().build();
-            CompletableFuture<HttpResponse<String>> asyncHttpResponse = httpClient.sendAsync(httpRequest, HttpResponse.BodyHandler.asString());
+            HttpRequest httpRequest = HttpRequest.newBuilder().uri(new URI(url)).GET().build();
+            CompletableFuture<HttpResponse<String>> asyncHttpResponse = httpClient.sendAsync(httpRequest,
+                                                                                             HttpResponse.BodyHandler.asString());
 
             System.out.println("================executor other thing==================");
             HttpResponse<String> httpResponse = asyncHttpResponse.get();
@@ -59,13 +60,18 @@ public class HttpClientManager {
     }
 
 
-    public static void post() {
+    public static void post(String url) {
+
+    }
+
+    public static void asyncPost(String url) {
 
     }
 
 
     public static void main(String[] args) {
-        Map<String, Object> resultMap = asyncGet();
+        String url = "https://github.com";
+        Map<String, Object> resultMap = asyncGet(url);
         System.out.println(resultMap);
     }
 }

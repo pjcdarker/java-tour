@@ -1,10 +1,10 @@
 /**
  * @author pjcdarker
- * @created 10/21/2017.
  */
-module com.pjcdark.j9 {
+module com.pjcdark.j9.net {
     requires java.base;
     requires java.logging;
     requires jdk.incubator.httpclient;
-    exports com.pjcdarker.j9;
+
+    exports com.pjcdarker.j9.net;
 }
