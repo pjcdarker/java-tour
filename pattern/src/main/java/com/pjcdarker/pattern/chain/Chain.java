@@ -15,18 +15,20 @@ public class Chain {
         requestHandle = DefaultRequest.INSTANCE;
     }
 
-    public Chain next(RequestHandler requestHandle) {
+    public RequestHandler addRequestHandler(RequestHandler requestHandle) {
         if (this.requestHandle == null) {
             this.requestHandle = requestHandle;
         } else {
             this.requestHandle.next(requestHandle);
         }
-        return this;
+        return requestHandle;
     }
+
 
     public void handler(HandleType handleType, Chain chain) {
         Optional<RequestHandler> requestHandler = getRequestHandler();
         requestHandler.ifPresent(request -> {
+            this.requestHandle = request;
             request.handler(handleType, chain);
         });
     }

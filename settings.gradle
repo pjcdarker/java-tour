@@ -1,8 +1,7 @@
 rootProject.name = 'learn'
 include 'pattern'
 include 'kafka'
-include 'codding'
-include 'AWSLambda'
-include 'Spark'
-include 'lagom'
+include 'spark'
+include 'base'
+include 'j9'
 

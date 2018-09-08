@@ -1,7 +1,6 @@
 package com.pjcdarker.kafka.quickstart;
 
 import com.pjcdarker.kafka.Kafkas;
-import com.pjcdarker.kafka.partition.ADPartitioner;
 import com.pjcdarker.kafka.topic.KafkaTopic;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;

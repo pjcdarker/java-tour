@@ -18,27 +18,28 @@ public class ChainTest {
 
     @Test
     public void checkHandler() {
-        chain.next(CheckRequestHandler.INSTANCE);
+        chain.addRequestHandler(CheckRequestHandler.INSTANCE);
         chain.handler(HandleType.CHECK, chain);
     }
 
     @Test
     public void testHandler() {
-        chain.next(TestRequestHandler.INSTANCE);
+        chain.addRequestHandler(TestRequestHandler.INSTANCE);
         chain.handler(HandleType.TEST, chain);
     }
 
     @Test
     public void productHandler() {
-        chain.next(ProductRequestHandler.INSTANCE);
+        chain.addRequestHandler(ProductRequestHandler.INSTANCE);
         chain.handler(HandleType.PRODUCT, chain);
     }
 
     @Test
-    public void testRequesthandler() {
-        chain = Chain.INSTANCE.next(ProductRequestHandler.INSTANCE)
-                              .next(TestRequestHandler.INSTANCE)
-                              .next(CheckRequestHandler.INSTANCE);
-        chain.handler(HandleType.PRODUCT, chain);
+    public void testRequestHandler() {
+        chain.addRequestHandler(ProductRequestHandler.INSTANCE)
+             .next(TestRequestHandler.INSTANCE)
+             .next(CheckRequestHandler.INSTANCE);
+
+        chain.handler(HandleType.CHECK, chain);
     }
 }

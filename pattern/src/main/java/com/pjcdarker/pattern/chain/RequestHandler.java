@@ -10,15 +10,16 @@ public abstract class RequestHandler {
 
     private RequestHandler next;
 
-    void next(RequestHandler requestHandler) {
+    RequestHandler next(RequestHandler requestHandler) {
         Objects.requireNonNull(requestHandler, " param requestHandler require nonNull ");
         if (this.next == null) {
             this.next = requestHandler;
-            return;
+            return this.next;
         }
         RequestHandler handle = this.next;
         handle.next = requestHandler;
         this.next = handle;
+        return this.next;
     }
 
     RequestHandler getNext() {
