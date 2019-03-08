@@ -7,23 +7,27 @@ import java.nio.channels.AsynchronousServerSocketChannel;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * @author pjcdarker
  */
 public class BIServer {
 
-    public static void start(int port) throws IOException {
-
+    public static void start(int port) throws InterruptedException {
+        CountDownLatch downLatch = new CountDownLatch(1);
         try (AsynchronousServerSocketChannel socketChannel = AsynchronousServerSocketChannel.open()) {
             socketChannel.bind(new InetSocketAddress(port), 1024);
-
             socketChannel.accept(socketChannel, new AcceptHandler());
+
+            downLatch.await();
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     static class AcceptHandler implements CompletionHandler<AsynchronousSocketChannel, AsynchronousServerSocketChannel> {
-
 
         @Override
         public void completed(AsynchronousSocketChannel result, AsynchronousServerSocketChannel attachment) {
@@ -61,28 +65,37 @@ public class BIServer {
                              .replaceAll("(\\?)+(\\s)*", "!");
 
             ByteBuffer buf = ByteBuffer.wrap(content.getBytes(StandardCharsets.UTF_8));
-            channel.write(buf, buf, new CompletionHandler<Integer, ByteBuffer>() {
-                @Override
-                public void completed(Integer result, ByteBuffer attachment) {
-                    if (attachment.hasRemaining()) {
-                        channel.write(attachment);
-                    }
-                }
-
-                @Override
-                public void failed(Throwable exc, ByteBuffer attachment) {
-
-                }
-            });
+            channel.write(buf, buf, new WriteHandler(channel));
         }
 
         @Override
         public void failed(Throwable exc, ByteBuffer attachment) {
-
+            exc.printStackTrace();
         }
     }
 
-    public static void main(String[] args) throws IOException {
+    static class WriteHandler implements CompletionHandler<Integer, ByteBuffer> {
+
+        private AsynchronousSocketChannel channel;
+
+        private WriteHandler(AsynchronousSocketChannel channel) {
+            this.channel = channel;
+        }
+
+        @Override
+        public void completed(Integer result, ByteBuffer attachment) {
+            if (attachment.hasRemaining()) {
+                channel.write(attachment);
+            }
+        }
+
+        @Override
+        public void failed(Throwable exc, ByteBuffer attachment) {
+            exc.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) throws InterruptedException {
         BIServer.start(9000);
     }
 
