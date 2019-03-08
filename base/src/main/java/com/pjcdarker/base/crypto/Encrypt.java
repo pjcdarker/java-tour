@@ -1,12 +1,5 @@
-package com.pjcdarker.base.encrypt;
+package com.pjcdarker.base.crypto;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.KeyGenerator;
-import javax.crypto.Mac;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -25,6 +18,13 @@ import java.security.SignatureException;
 import java.security.UnrecoverableEntryException;
 import java.security.cert.CertificateException;
 import java.util.Objects;
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.KeyGenerator;
+import javax.crypto.Mac;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
 
 /**
  * @author pjcdarker
@@ -52,7 +52,7 @@ public class Encrypt {
 
             // privateKeyEntry
             KeyStore.PrivateKeyEntry privateKeyEntry = (KeyStore.PrivateKeyEntry) keyStore.getEntry("keyAlias",
-                                                                                                    entryPassword);
+                entryPassword);
 
         } catch (CertificateException | NoSuchAlgorithmException | IOException | UnrecoverableEntryException e) {
             e.printStackTrace();
@@ -61,7 +61,7 @@ public class Encrypt {
 
     public static void encryptString(String original) throws NoSuchPaddingException, NoSuchAlgorithmException,
         InvalidKeyException, BadPaddingException, IllegalBlockSizeException, UnsupportedEncodingException {
-        Objects.requireNonNull(original, "encrypt text require not null");
+        Objects.requireNonNull(original, "crypto text require not null");
         //  which encryption algorithm to use
         Cipher cipher = Cipher.getInstance(transform);
 
@@ -80,14 +80,13 @@ public class Encrypt {
      * Mac
      *
      * @param original
-     *
      * @throws NoSuchAlgorithmException
      * @throws InvalidKeyException
      * @throws UnsupportedEncodingException
      */
     public static String macString(String original) throws NoSuchAlgorithmException,
         InvalidKeyException, UnsupportedEncodingException {
-        Objects.requireNonNull(original, "encrypt text require not null");
+        Objects.requireNonNull(original, "crypto text require not null");
         //  which encryption algorithm to use
         Mac mac = Mac.getInstance(transform);
 
@@ -106,9 +105,7 @@ public class Encrypt {
     /**
      * @param original
      * @param algorithm AES, SHA-256
-     *
      * @return
-     *
      * @throws NoSuchAlgorithmException
      */
     public static String digestString(String original, String algorithm)
@@ -128,9 +125,7 @@ public class Encrypt {
     /**
      * @param original
      * @param algorithm SHA256WithDSA
-     *
      * @return
-     *
      * @throws NoSuchAlgorithmException
      * @throws InvalidKeyException
      */
@@ -168,9 +163,7 @@ public class Encrypt {
     /**
      * @param algorithm
      * @param keyBitSize
-     *
      * @return
-     *
      * @throws NoSuchAlgorithmException
      */
     private static SecretKey genSecretKey(String algorithm, int keyBitSize) throws NoSuchAlgorithmException {
@@ -182,9 +175,7 @@ public class Encrypt {
 
     /**
      * @param algorithm
-     *
      * @return
-     *
      * @throws NoSuchAlgorithmException
      */
     private static KeyPair genKeyPair(String algorithm) throws NoSuchAlgorithmException {

@@ -12,15 +12,15 @@ import java.util.StringTokenizer;
 /**
  * X-Forwarded-For(XFF): 用来识别通过HTTP代理或负载均衡方式连接到Web服务器的客户端最原始的IP地址的HTTP请求头字段
  * Remote Address: 来自 TCP 连接，表示与服务端建立 TCP 连接的设备 IP
- * Proxy-Client-IP与 WL-Proxy-Client-IP : apache + Weblogic
+ * Proxy-BIClient-IP与 WL-Proxy-BIClient-IP : apache + Weblogic
  * HTTP_CLIENT_IP: 代理服务器发送请求头.
  *
  * @author pjcdarker
  */
 public class IpUtil {
     private static final List<String> HEADERS = Arrays.asList(
-        "X-Forwarded-For", "X-Real-IP", "Proxy-Client-IP",
-        "WL-Proxy-Client-IP", "HTTP_CLIENT_IP",
+        "X-Forwarded-For", "X-Real-IP", "Proxy-BIClient-IP",
+        "WL-Proxy-BIClient-IP", "HTTP_CLIENT_IP",
         "HTTP_X_FORWARDED_FOR");
 
     private static final List<String> LOCAL_HOSTS = Arrays.asList("127.0.0.1", "localhost");

@@ -1,4 +1,4 @@
-package com.pjcdarker.base.reflection;
+package com.pjcdarker.base.reflect;
 
 import org.junit.jupiter.api.Test;
 

@@ -1,8 +1,7 @@
-package com.pjcdarker.base.util;
-
-import org.junit.jupiter.api.Test;
+package com.pjcdarker.base.io;
 
 import java.util.List;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author pjcdarker
@@ -12,7 +11,7 @@ public class ScanRunnerTest {
 
     @Test
     public void scan() {
-        List<Class<?>> results = ScanRunner.findClassScanPackage("com.pjcdarker.base.net");
+        List<Class<?>> results = ScanHelper.findClassScanPackage("com.pjcdarker.base.reflect");
         results.forEach(r -> System.out.println(r.getCanonicalName()));
     }
 }

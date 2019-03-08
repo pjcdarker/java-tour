@@ -1,4 +1,4 @@
-package com.pjcdarker.base.reflection;
+package com.pjcdarker.base.reflect;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;

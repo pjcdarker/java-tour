@@ -19,8 +19,8 @@ public class KafkaStreamWordCountProcessor {
     public static void processe() {
         TopologyBuilder builder = new TopologyBuilder();
 
-        // 添加数据源 由streams-file-input topic 提供消息
-        builder.addSource("Source", "streams-file-input");
+        // 添加数据源 由streams-io-input topic 提供消息
+        builder.addSource("Source", "streams-io-input");
 
         // 添加 Process 是 Source的子节点
         builder.addProcessor("Process", new WordCountProcessorSupplier(), "Source");

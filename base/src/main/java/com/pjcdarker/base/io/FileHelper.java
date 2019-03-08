@@ -1,4 +1,4 @@
-package com.pjcdarker.base.file;
+package com.pjcdarker.base.io;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -16,7 +17,11 @@ import java.util.zip.ZipOutputStream;
 /**
  * @author pjcdarker
  */
-public class ZipFiles {
+public class FileHelper {
+
+    private FileHelper() {
+
+    }
 
     /**
      * unzip.
@@ -29,20 +34,16 @@ public class ZipFiles {
                 String filename = zipEntry.getName();
 
                 Path path = Paths.get(targetPath);
-                if (!Files.exists(path)) {
+                if (!path.toFile().isDirectory()) {
                     Files.createDirectory(path);
                 }
 
                 Path filePath = Paths.get(targetPath + File.separator + filename);
-                if (!Files.exists(filePath)) {
-                    filePath = Files.createFile(filePath);
-                }
-
-                OutputStream out = Files.newOutputStream(filePath);
-
-                int len;
-                while ((len = zipInputStream.read(buffer)) > 0) {
-                    out.write(buffer, 0, len);
+                try (OutputStream out = Files.newOutputStream(filePath)) {
+                    int len;
+                    while ((len = zipInputStream.read(buffer)) > 0) {
+                        out.write(buffer, 0, len);
+                    }
                 }
                 zipEntry = zipInputStream.getNextEntry();
             }
@@ -61,11 +62,11 @@ public class ZipFiles {
      */
     public static void compress(final String sourcesFile, final String compressFile) {
         try (FileOutputStream fos = new FileOutputStream(compressFile);
-             ZipOutputStream zipOutputStream = new ZipOutputStream(fos)) {
+            ZipOutputStream zipOutputStream = new ZipOutputStream(fos)) {
 
             File fileToZip = new File(sourcesFile);
             compressFile(fileToZip, fileToZip.getName(), zipOutputStream);
-            
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -78,10 +79,9 @@ public class ZipFiles {
             return;
         }
         Path path = Paths.get(fileToZip.getPath());
-        if (Files.isDirectory(path)) {
-            try {
-                Files.list(path)
-                     .forEach(p -> compressFile(p.toFile(), filename + File.separator + p.getFileName(), zipOut));
+        if (path.toFile().isDirectory()) {
+            try (Stream<Path> stream = Files.list(path)) {
+                stream.forEach(p -> compressFile(p.toFile(), filename + File.separator + p.getFileName(), zipOut));
             } catch (IOException e) {
                 e.printStackTrace();
             }

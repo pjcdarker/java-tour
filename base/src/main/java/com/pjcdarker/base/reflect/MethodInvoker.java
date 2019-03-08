@@ -1,4 +1,4 @@
-package com.pjcdarker.base.reflection;
+package com.pjcdarker.base.reflect;
 
 import java.lang.invoke.CallSite;
 import java.lang.invoke.LambdaMetafactory;
@@ -13,15 +13,18 @@ import java.lang.reflect.Method;
 public class MethodInvoker {
 
     public interface ProcessBase {
+
     }
 
     @FunctionalInterface
     public interface Step {
+
         Boolean apply();
     }
 
     @FunctionalInterface
     public interface Type {
+
         String apply();
     }
 
@@ -34,7 +37,7 @@ public class MethodInvoker {
             final Method method = process.getClass().getMethod(mname);
             method.setAccessible(true);
 
-            // standard reflection stuff
+            // standard reflect stuff
             final MethodHandle unreflect = caller.unreflect(method);
 
             final MethodType type = MethodType.methodType(Boolean.class);
@@ -68,7 +71,7 @@ public class MethodInvoker {
         callSite.getTarget().invoke();
     }
 
-    public static void invokeMethod(String methodName) throws Throwable {
+    public static void invokeExactMethod(String methodName) throws Throwable {
         // 1. Retrieves a Lookup
         MethodHandles.Lookup lookup = MethodHandles.lookup();
 
@@ -86,13 +89,33 @@ public class MethodInvoker {
         System.out.println(b);
     }
 
+    public static void invokeMethod(Object instance, Method method, Object args) throws Throwable {
+        // 1. Retrieves a Lookup
+        MethodHandles.Lookup lookup = MethodHandles.lookup();
+
+        // 2. Creates a MethodType(return type   argument class)
+        MethodType methodType = MethodType.methodType(method.getReturnType(), method.getParameterTypes());
+
+        // 3. Find the MethodHandle(class, name of method)
+        MethodHandle handle = lookup.findVirtual(instance.getClass(), method.getName(), methodType);
+
+        // 4. Invoke the method
+        System.out.println(handle.invoke(instance, args));
+    }
+
     public boolean navigateToUrl(String url) {
         System.out.println(url);
         return true;
     }
 
     public static void main(String[] args) throws Throwable {
-        MethodInvoker.invokeMethod("navigateToUrl");
+        // MethodInvoker.invokeExactMethod("navigateToUrl");
+
+        MethodInvoker instance = new MethodInvoker();
+
+        Method method = instance.getClass().getDeclaredMethod("navigateToUrl", String.class);
+
+        MethodInvoker.invokeMethod(instance, method, "https://github.com/");
     }
 
 }
