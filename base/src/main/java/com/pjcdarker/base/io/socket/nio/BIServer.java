@@ -93,7 +93,7 @@ public class BIServer {
 
         String content = new String(bytes, StandardCharsets.UTF_8);
 
-        if ("exit".equals(content)) {
+        if ("q".equals(content)) {
             channel.close();
             return;
         }

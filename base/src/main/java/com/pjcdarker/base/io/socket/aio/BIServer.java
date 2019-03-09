@@ -8,16 +8,22 @@ import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author pjcdarker
  */
 public class BIServer {
 
+    private static AtomicInteger counter = new AtomicInteger(0);
+
+    private static CountDownLatch downLatch = new CountDownLatch(1);
+
     public static void start(int port) throws InterruptedException {
-        CountDownLatch downLatch = new CountDownLatch(1);
         try (AsynchronousServerSocketChannel socketChannel = AsynchronousServerSocketChannel.open()) {
             socketChannel.bind(new InetSocketAddress(port), 1024);
+
+            System.err.println("start accept...");
             socketChannel.accept(socketChannel, new AcceptHandler());
 
             downLatch.await();
@@ -31,16 +37,22 @@ public class BIServer {
 
         @Override
         public void completed(AsynchronousSocketChannel result, AsynchronousServerSocketChannel attachment) {
-            // accept next connect
-            attachment.accept(attachment, this);
-            ByteBuffer buffer = ByteBuffer.allocate(1024);
 
+            System.err.println("Accept counter: " + counter.incrementAndGet());
+
+            if (attachment.isOpen()) {
+                // accept next connect
+                attachment.accept(attachment, this);
+            }
+
+            ByteBuffer buffer = ByteBuffer.allocate(1024);
             result.read(buffer, buffer, new ReadHandler(result));
         }
 
         @Override
         public void failed(Throwable exc, AsynchronousServerSocketChannel attachment) {
             exc.printStackTrace();
+            System.err.println("AcceptHandler");
         }
     }
 
@@ -54,12 +66,24 @@ public class BIServer {
 
         @Override
         public void completed(Integer result, ByteBuffer attachment) {
+
             attachment.flip();
             byte[] bytes = new byte[attachment.remaining()];
             attachment.get(bytes);
+            attachment.clear();
 
             String content = new String(bytes, StandardCharsets.UTF_8);
             System.out.println("msg: " + content);
+
+            if ("q".equals(content)) {
+                try {
+                    channel.close();
+                    downLatch.countDown();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return;
+            }
 
             content = content.replace("吗", "")
                              .replaceAll("(\\?)+(\\s)*", "!");
@@ -71,6 +95,8 @@ public class BIServer {
         @Override
         public void failed(Throwable exc, ByteBuffer attachment) {
             exc.printStackTrace();
+            System.err.println("ReadHandler");
+            System.err.println("counter: " + counter.decrementAndGet());
         }
     }
 
@@ -85,13 +111,17 @@ public class BIServer {
         @Override
         public void completed(Integer result, ByteBuffer attachment) {
             if (attachment.hasRemaining()) {
-                channel.write(attachment);
+                channel.write(attachment, attachment, this);
+            } else {
+                ByteBuffer buffer = ByteBuffer.allocate(1024);
+                channel.read(buffer, buffer, new ReadHandler(channel));
             }
         }
 
         @Override
         public void failed(Throwable exc, ByteBuffer attachment) {
             exc.printStackTrace();
+            System.err.println("WriteHandler");
         }
     }
 

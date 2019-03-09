@@ -86,7 +86,7 @@ public class BIClient {
         ByteBuffer buffer = ByteBuffer.wrap(data.getBytes(StandardCharsets.UTF_8.displayName()));
         channel.write(buffer);
 
-        if ("exit".equals(data)) {
+        if ("q".equals(data)) {
             channel.close();
             System.exit(-1);
             return;

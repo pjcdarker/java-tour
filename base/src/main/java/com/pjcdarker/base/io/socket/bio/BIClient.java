@@ -19,8 +19,8 @@ public class BIClient {
 
             String data = scanner.nextLine();
             System.err.println("input data: " + data);
-            if ("exit".equals(data)) {
-                System.exit(-1);
+            if ("q".equals(data)) {
+                System.exit(1);
                 break;
             }
 

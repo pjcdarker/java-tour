@@ -17,7 +17,8 @@ import java.util.StringTokenizer;
  *
  * @author pjcdarker
  */
-public class IpUtil {
+public class NetUtil {
+
     private static final List<String> HEADERS = Arrays.asList(
         "X-Forwarded-For", "X-Real-IP", "Proxy-BIClient-IP",
         "WL-Proxy-BIClient-IP", "HTTP_CLIENT_IP",
