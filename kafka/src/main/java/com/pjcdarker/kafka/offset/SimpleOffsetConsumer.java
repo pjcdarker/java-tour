@@ -1,6 +1,6 @@
 package com.pjcdarker.kafka.offset;
 
-import com.pjcdarker.kafka.Kafkas;
+import com.pjcdarker.kafka.KafkaProps;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRebalanceListener;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -21,21 +21,21 @@ import java.util.Scanner;
  */
 public class SimpleOffsetConsumer implements Runnable {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SimpleOffsetConsumer.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SimpleOffsetConsumer.class);
 
     private List<String> topics;
     private Consumer consumer;
     private boolean isRebalancedListener;
     private int offset;
 
-    public SimpleOffsetConsumer(List topics, Consumer consumer, int offset) {
+    public SimpleOffsetConsumer(List<String> topics, Consumer consumer, int offset) {
         this.topics = topics;
         this.consumer = consumer;
         this.offset = offset;
     }
 
-    void setRebalancedListener(boolean isRebalanceListener) {
-        this.isRebalancedListener = isRebalanceListener;
+    void setRebalancedListener(boolean isRebalancedListener) {
+        this.isRebalancedListener = isRebalancedListener;
     }
 
     @Override
@@ -43,19 +43,23 @@ public class SimpleOffsetConsumer implements Runnable {
         if (isRebalancedListener) {
             consumer.subscribe(topics, new ConsumerRebalanceListener() {
                 public void onPartitionsRevoked(Collection<TopicPartition> partitions) {
-                    LOGGER.info("{} topic-partitions are revoked from this consumer\n", Arrays.toString(partitions.toArray()));
+                    LOG.info("{} topic-partitions are revoked from this consumer\n",
+                             Arrays.toString(partitions.toArray()));
                 }
 
                 public void onPartitionsAssigned(Collection<TopicPartition> partitions) {
                     switch (offset) {
                         case -1:
                             consumer.seekToEnd(partitions);
+                            break;
                         case 0:
                             consumer.seekToBeginning(partitions);
+                            break;
                         default:
                             partitions.forEach(partition -> consumer.seek(partition, offset));
                     }
-                    LOGGER.info("{} topic-partitions are assigned to this consumer\n", Arrays.toString(partitions.toArray()));
+                    LOG.info("{} topic-partitions are assigned to this consumer\n",
+                             Arrays.toString(partitions.toArray()));
                 }
             });
         } else {
@@ -73,16 +77,16 @@ public class SimpleOffsetConsumer implements Runnable {
             }
         } catch (WakeupException ex) {
             ex.printStackTrace();
-            LOGGER.error("Exception caught " + ex.getMessage());
+            LOG.error("Exception caught " + ex.getMessage());
         } finally {
             consumer.close();
-            LOGGER.info("After closing KafkaConsumer");
+            LOG.info("After closing KafkaConsumer");
         }
     }
 
     public static void main(String[] args) throws InterruptedException {
         List<String> topics = Arrays.asList("topic01", "topic02");
-        Consumer kafkaConsumer = Kafkas.getConsumer();
+        Consumer kafkaConsumer = KafkaProps.getConsumer();
 
         int offset = 0;
         SimpleOffsetConsumer simpleConsumerTask = new SimpleOffsetConsumer(topics, kafkaConsumer, offset);
@@ -97,7 +101,7 @@ public class SimpleOffsetConsumer implements Runnable {
         }
         scanner.close();
         kafkaConsumer.wakeup();
-        LOGGER.info("Stopping consumer .....");
+        LOG.info("Stopping consumer .....");
         consumerThread.join(60000);
     }
 }

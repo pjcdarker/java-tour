@@ -1,6 +1,6 @@
 package com.pjcdarker.kafka.quickstart;
 
-import com.pjcdarker.kafka.Kafkas;
+import com.pjcdarker.kafka.KafkaProps;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ public class SimpleConsumerTest {
     @BeforeAll
     public static void before() {
         topics = Arrays.asList("topic01", "topic02");
-        kafkaConsumer = Kafkas.getConsumer();
+        kafkaConsumer = KafkaProps.getConsumer();
     }
 
     @Test

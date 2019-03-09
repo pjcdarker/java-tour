@@ -8,12 +8,12 @@ import org.apache.kafka.clients.producer.Producer;
 import java.util.Properties;
 
 /**
- * Kafkas.
+ * KafkaProps.
  *
  * @author pjc
  * @create 10/20/2016
  */
-public class Kafkas {
+public class KafkaProps {
 
     private static final String KAFKA_PRODUCER_CONFIG = "/kafka.producer.properties";
     private static final String KAFKA_CONSUMER_CONFIG = "/kafka.consumer.properties";

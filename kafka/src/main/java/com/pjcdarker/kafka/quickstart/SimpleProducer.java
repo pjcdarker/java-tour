@@ -1,6 +1,6 @@
 package com.pjcdarker.kafka.quickstart;
 
-import com.pjcdarker.kafka.Kafkas;
+import com.pjcdarker.kafka.KafkaProps;
 import com.pjcdarker.kafka.topic.KafkaTopic;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -19,7 +19,7 @@ import java.util.concurrent.ExecutionException;
  */
 public class SimpleProducer {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SimpleProducer.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SimpleProducer.class);
 
     private List<String> topics;
     private Producer producer;
@@ -30,12 +30,14 @@ public class SimpleProducer {
     }
 
     public void send(String message) {
-        System.out.println("producer send msg: " + message);
+        LOG.info("producer send msg: " + message);
         this.topics.forEach(topic -> {
             ProducerRecord producerRecord = new ProducerRecord(topic, topic + message, message);
             try {
                 RecordMetadata recordMetadata = (RecordMetadata) producer.send(producerRecord).get();
-                LOGGER.info("{send} msg -> topic -> partition -> offset :  " + message + " -> " + topic + " -> " + recordMetadata.partition() + " -> " + recordMetadata.offset());
+                LOG.info("{send} msg -> topic -> partition -> offset :  "
+                             + message + " -> " + topic + " -> "
+                             + recordMetadata.partition() + " -> " + recordMetadata.offset());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
@@ -46,19 +48,24 @@ public class SimpleProducer {
 
     public void sendAndCallback(String message) {
         System.out.println("producer send msg: " + message);
-        this.topics.parallelStream().forEach(topic -> {
-            ProducerRecord producerRecord = new ProducerRecord(topic, topic + "-key", message);
-            producer.send(producerRecord, (metadata, ex) -> {
-                Optional.ofNullable(metadata).ifPresent(recordMetadata -> {
-                    LOGGER.info("{sendAndCallback} msg -> topic -> partition -> offset :  " + message + " -> " + topic + " -> " + recordMetadata.partition() + " -> " + recordMetadata.offset());
-                });
+        this.topics.parallelStream()
+                   .forEach(topic -> {
+                       ProducerRecord producerRecord = new ProducerRecord(topic, topic + "-key", message);
+                       producer.send(producerRecord, (metadata, ex) -> {
+                           Optional.ofNullable(metadata)
+                                   .ifPresent(recordMetadata -> {
+                                       LOG.info("{sendAndCallback} msg -> topic -> partition -> offset :  "
+                                                    + message + " -> " + topic + " -> "
+                                                    + recordMetadata.partition() + " -> " + recordMetadata.offset());
+                                   });
 
-                Optional.ofNullable(ex).ifPresent(e -> {
-                    LOGGER.error("kafka consumer execption" + e.getMessage());
-                    e.printStackTrace();
-                });
-            });
-        });
+                           Optional.ofNullable(ex)
+                                   .ifPresent(e -> {
+                                       LOG.error("kafka consumer exception" + e.getMessage());
+                                       e.printStackTrace();
+                                   });
+                       });
+                   });
     }
 
     public void close() {
@@ -68,12 +75,12 @@ public class SimpleProducer {
 
     public static void main(String[] args) {
         List<String> topics = KafkaTopic.getTopicNames();
-        Producer producer = Kafkas.getProducer();
+        Producer producer = KafkaProps.getProducer();
         SimpleProducer simpleProducer = new SimpleProducer(topics, producer);
 
         Scanner scanner = new Scanner(System.in);
         String msg = "";
-        while (!msg.equals("-1")) {
+        while (!msg.equals("q")) {
             msg = scanner.nextLine();
             simpleProducer.send(msg);
             // simpleProducer.sendAndCallback(msg);

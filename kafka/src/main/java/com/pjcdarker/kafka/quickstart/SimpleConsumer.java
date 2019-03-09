@@ -1,6 +1,6 @@
 package com.pjcdarker.kafka.quickstart;
 
-import com.pjcdarker.kafka.Kafkas;
+import com.pjcdarker.kafka.KafkaProps;
 import com.pjcdarker.kafka.topic.KafkaTopic;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRebalanceListener;
@@ -22,31 +22,33 @@ import java.util.Scanner;
  */
 public class SimpleConsumer implements Runnable {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SimpleConsumer.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SimpleConsumer.class);
 
     private List<String> topics;
     private Consumer consumer;
-    private boolean isRebalanceListener;
+    private boolean isRebalancedListener;
 
     public SimpleConsumer(List topics, Consumer consumer) {
         this.topics = topics;
         this.consumer = consumer;
     }
 
-    void setRebalanceListener(boolean isRebalanceListener) {
-        this.isRebalanceListener = isRebalanceListener;
+    void setRebalancedListener(boolean isRebalancedListener) {
+        this.isRebalancedListener = isRebalancedListener;
     }
 
     @Override
     public void run() {
-        if (isRebalanceListener) {
+        if (isRebalancedListener) {
             consumer.subscribe(topics, new ConsumerRebalanceListener() {
                 public void onPartitionsRevoked(Collection<TopicPartition> partitions) {
-                    LOGGER.info("{} topic-partitions are revoked from this consumer\n", Arrays.toString(partitions.toArray()));
+                    LOG.info("{} topic-partitions are revoked from this consumer\n",
+                             Arrays.toString(partitions.toArray()));
                 }
 
                 public void onPartitionsAssigned(Collection<TopicPartition> partitions) {
-                    LOGGER.info("{} topic-partitions are assigned to this consumer\n", Arrays.toString(partitions.toArray()));
+                    LOG.info("{} topic-partitions are assigned to this consumer\n",
+                             Arrays.toString(partitions.toArray()));
                 }
             });
         } else {
@@ -64,10 +66,10 @@ public class SimpleConsumer implements Runnable {
             }
         } catch (WakeupException ex) {
             ex.printStackTrace();
-            LOGGER.error("Exception caught " + ex.getMessage());
+            LOG.error("Exception caught " + ex.getMessage());
         } finally {
             consumer.close();
-            LOGGER.info("After closing KafkaConsumer");
+            LOG.info("After closing KafkaConsumer");
         }
     }
 
@@ -75,21 +77,21 @@ public class SimpleConsumer implements Runnable {
     public static void main(String[] args) throws InterruptedException {
         List<String> topics = KafkaTopic.getTopicNames();
         topics.add("streams-output-01");
-        Consumer kafkaConsumer = Kafkas.getConsumer();
+        Consumer kafkaConsumer = KafkaProps.getConsumer();
 
         SimpleConsumer simpleConsumerTask = new SimpleConsumer(topics, kafkaConsumer);
-        simpleConsumerTask.setRebalanceListener(true);
+        simpleConsumerTask.setRebalancedListener(true);
 
         Thread consumerThread = new Thread(simpleConsumerTask);
         consumerThread.start();
         Scanner scanner = new Scanner(System.in);
         String cmd = "";
-        while (!cmd.equals("-1")) {
+        while (!cmd.equals("q")) {
             cmd = scanner.nextLine();
         }
         scanner.close();
         kafkaConsumer.wakeup();
-        LOGGER.info("Stopping consumer .....");
+        LOG.info("Stopping consumer .....");
         consumerThread.join(60000);
     }
 }
