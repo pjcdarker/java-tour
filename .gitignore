@@ -13,7 +13,6 @@
 
 ## gradle
 .gradle/
-gradle/
 build/
 target/
 
