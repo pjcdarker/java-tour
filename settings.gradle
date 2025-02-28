@@ -1,2 +1,2 @@
-rootProject.name = 'learn-java'
+rootProject.name = 'java-tour'
 include 'base'

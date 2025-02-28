@@ -1,7 +1,8 @@
-
-group 'com.pjcdarker'
-version '1.0-SNAPSHOT'
+plugins {
+   id 'java-conventions'
+}
 
 dependencies {
-    compile 'javax.servlet:javax.servlet-api:4.0.0'
+    implementation 'javax.servlet:javax.servlet-api:4.0.0'
 }
+
