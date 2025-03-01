@@ -1,2 +1,2 @@
-rootProject.name = 'java-tour'
-include 'base'
+rootProject.name = "java-tour"
+include("base")
