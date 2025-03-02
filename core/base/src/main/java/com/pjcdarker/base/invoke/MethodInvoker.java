@@ -1,4 +1,4 @@
-package com.pjcdarker.base.reflect;
+package com.pjcdarker.base.invoke;
 
 import java.lang.invoke.CallSite;
 import java.lang.invoke.LambdaMetafactory;
