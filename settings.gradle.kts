@@ -1,2 +1,3 @@
 rootProject.name = "java-tour"
-include("base")
+include("core")
+include("core:base")
