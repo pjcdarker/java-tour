@@ -1,3 +1,5 @@
+import java.net.URI
+
 plugins {
     id("java")
     id("idea")
@@ -19,12 +21,11 @@ repositories {
     mavenCentral()
 }
 
+
 dependencies {
-    testImplementation(libs.junit.jupiter.api)
-    testRuntimeOnly(
-            libs.junit.jupiter.engine,
-            libs.junit.platform.launcher
-    )
+    testImplementation("org.junit.jupiter:junit-jupiter-api:${Libs.junit5.version}")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${Libs.junit5.version}")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:${Libs.junit5.platformVersion}")
 }
 
 tasks.test {
@@ -32,3 +33,9 @@ tasks.test {
 }
 
 
+object Libs {
+    object junit5 {
+        const val version = "5.12.0"
+        const val platformVersion = "1.12.0"
+    }
+}
