@@ -3,6 +3,8 @@ package com.pjcdarker.base.invoke;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,7 +19,7 @@ public class MethodHandleInvoker<T> {
     }
 
     public Object invokeStatic(String method, Class<?> rtype, Object... args) throws Throwable {
-        final MethodType methodType = methodType(rtype, args);
+        final MethodType methodType = MethodType.methodType(rtype, paramTypes(args));
         final MethodHandle mh = MethodHandles
             .lookup()
             .findStatic(this.mhClass, method, methodType);
@@ -26,22 +28,38 @@ public class MethodHandleInvoker<T> {
     }
 
     public Object invoke(String method, Class<?> rtype, Object... args) throws Throwable {
-        MethodHandle mh = MethodHandles.lookup().findVirtual(this.mhClass, method, methodType(rtype, args));
+        MethodHandle mh = MethodHandles.lookup().findVirtual(this.mhClass, method,
+            MethodType.methodType(rtype, paramTypes(args)));
         return mh.invokeWithArguments(arguments(args));
     }
 
-    private MethodType methodType(Class<?> rtype, Object[] args) {
-        Class<?>[] paramTypes = Arrays.stream(args)
-                                      .map(e -> {
-                                          if (e instanceof TypeValue typeValue) {
-                                              return typeValue.typeClass;
-                                          }
-                                          return e.getClass();
-                                      })
-                                      .toList()
-                                      .toArray(new Class<?>[]{});
+    public Object invokeUnreflect(String method, Object... args) throws Throwable {
+        Method m = this.mhClass.getDeclaredMethod(method, paramTypes(args));
+        MethodHandle mh;
+        if (Modifier.isPrivate(m.getModifiers())) {
+            mh = MethodHandles.privateLookupIn(this.mhClass, MethodHandles.lookup()).unreflect(m);
+        } else {
+            mh = MethodHandles.lookup().unreflect(m);
+        }
 
-        return MethodType.methodType(rtype, paramTypes);
+        if (Modifier.isStatic(m.getModifiers())) {
+            return mh.invokeWithArguments(extractActualArguments(args));
+        }
+
+        return mh.invokeWithArguments(arguments(args));
+    }
+
+
+    private Class<?>[] paramTypes(Object[] args) {
+        return Arrays.stream(args)
+                     .map(e -> {
+                         if (e instanceof TypeValue typeValue) {
+                             return typeValue.typeClass;
+                         }
+                         return e.getClass();
+                     })
+                     .toList()
+                     .toArray(new Class<?>[]{});
     }
 
     private List<Object> arguments(Object[] args) throws Exception {
