@@ -49,8 +49,7 @@ public class MethodHandleInvoker<T> {
         return mh.invokeWithArguments(arguments(args));
     }
 
-
-    private Class<?>[] paramTypes(Object[] args) {
+    private Class<?>[] paramTypes(Object... args) {
         return Arrays.stream(args)
                      .map(e -> {
                          if (e instanceof TypeValue typeValue) {
@@ -81,7 +80,6 @@ public class MethodHandleInvoker<T> {
                      })
                      .toList();
     }
-
 
     public record TypeValue(Class<?> typeClass, Object value) {
 
